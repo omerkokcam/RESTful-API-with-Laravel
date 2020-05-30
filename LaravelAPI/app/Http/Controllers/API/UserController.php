@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Category;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
@@ -99,8 +100,11 @@ class UserController extends Controller
 //        return new UserResource($user2);
 
         $users = User::all();
-        for($i=1 ; $i <= ; $i++){
+//        return UserResource::collection($users);
+//        return new UserCollection($users);
+        return UserResource::collection($users)->additional([
+           'meta' => $users->count(),
+        ]);
 
-        }
     }
 }
