@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Category;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductWithCategoriesResource;
 use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -123,6 +125,17 @@ class  ProductController extends Controller
         return $mapped->all();
         //return Product::select('id','name')->orderBy('created_at','desc')->take(10)->get();
        // return Product::selectRaw('id as product_id, name as product_name')->orderBy('created_at','desc')->take(100)->get();
+
+    }
+    public function custom3(){
+        $products = Product::paginate(10);
+        return ProductResource::collection($products);
+
+    }
+    public function listWithCategories(){
+        $products = Product::with('categories')->paginate(10);
+        return ProductWithCategoriesResource::collection($products);
+
 
     }
 }

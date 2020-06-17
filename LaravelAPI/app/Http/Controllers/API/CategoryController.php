@@ -4,55 +4,54 @@ namespace App\Http\Controllers\API;
 
 use App\Category;
 use App\Http\Controllers\Controller;
+use Facade\FlareClient\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class CategoryController extends Controller
+class CategoryController extends ApiController // DİKKAT ET Controller değil
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function index()
     {
-        return Category::paginate(10);
+        //return response(Category::paginate(10));
+       // return Category::paginate(10);
+        return $this->apiResponse(ResultType::Success,Category::all(), 'categories fetched',200  );
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        // $product = Product::create($input);
+        $name = $request ->name ;
         $category = new Category();
-        $category->name = $input['name'];
-        $category->slug = Str::slug($input['name']);
-        $category -> save();
-        return response()->json([
-            "data" => $category,
-            "message" => "Category created."
-        ],201);
+        $category->name = $name;
+        $category->slug = Str::slug($name);
+        $category->save();
+//        return response()->json([
+//            "data" => $category,
+//            "message" => "Category created."
+//        ],201);
+        return $this->apiResponse(ResultType::Success,$category,'category is created',201);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        $category = Category::find($id);
-        if($category)
-            return response($category,200);
-        else
-            return response(["message" => "Category not found"],404);
+       return $this->apiResponse(ResultType::Success,$category,'category fetched', 200);
     }
 
     /**
@@ -60,34 +59,26 @@ class CategoryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Category $category)
     {
         $input = $request->all();
-        if($category) {
-            $category->update($input);
-            return response(["message" => "Category is updated."],200) ;;
-        }
-        else
-            return response(["message" => "Category not found"],404) ;
+        $category->update($input);
+        return $this->apiResponse(ResultType::Success,$category,"Category is updated.",200) ;
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Category $category)
     {
-        if($category){
             $category->delete();
-            return response(["message" => "Category is deleted."],200);
-        }
-        else{
-            return response(["message" => "Category is not found"],404) ;
-        }
+            return $this->apiResponse(ResultType::Success,$category,"Category is deleted.",200) ;
     }
     public function custom1()
     {

@@ -21,7 +21,11 @@ Route::get("/categories/custom1",'API\CategoryController@custom1');
 Route::get("/products/custom1",'API\ProductController@custom1');
 Route::get("/products/custom2",'API\ProductController@custom2');
 Route::get("/categories/report1",'API\CategoryController@report1');
+Route::get("/categories/index",'API\CategoryController@index');
 Route::get("/users/custom",'API\UserController@custom');
+Route::get("/products/custom3",'API\ProductController@custom3');
+Route::get("/products/listwithcategories",'API\ProductController@listWithCategories');
+
 
 Route::apiResources([
     "products"=> "API\ProductController",

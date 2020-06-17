@@ -19,7 +19,7 @@ class UserCollection extends ResourceCollection
             'data' => $this->collection,
             'meta' => [
                 'total_users' => $this->collection->count(),
-
+                'custom' => 'value',
             ]
         ];
     }

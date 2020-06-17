@@ -97,14 +97,16 @@ class UserController extends Controller
     public function custom(){
 
 //        $user2 = User::find(2);
+          UserResource::withoutWrapping();
 //        return new UserResource($user2);
-
         $users = User::all();
-//        return UserResource::collection($users);
+        return UserResource::collection($users);
 //        return new UserCollection($users);
-        return UserResource::collection($users)->additional([
-           'meta' => $users->count(),
-        ]);
+//        return UserResource::collection($users)->additional([
+//           'meta' => $users->count(),
+//        ]);
 
     }
+
+
 }
